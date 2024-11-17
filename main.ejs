@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1> Gallery & News Insights</h1>
+    </header>
+
+    <main>
+        <!-- Jennie Gallery Section -->
+        <section>
+            <h2>Gallery</h2>
+            <div class="gallery">
+                <% jennie.forEach(image => { %>
+                    <div class="gallery-item">
+                        <img src="<%= image.urls.small %>" alt="<%= image.alt_description || 'Jennie image' %>" class="gallery-image">
+                        <p><%= image.description || image.alt_description || 'Beautiful Jennie' %></p>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- Korea News Section -->
+        <section>
+            <h2>Korea News</h2>
+            <ul class="news-list">
+                <% news.forEach(article => { %>
+                    <li>
+                        <a href="<%= article.url %>" target="_blank"><%= article.title %></a>
+                        <p><%= article.description || 'No description available' %></p>
+                    </li>
+                <% }) %>
+            </ul>
+        </section>
+
+        <!-- News Insights Section -->
+        <section>
+            <h2>News Insights</h2>
+            <canvas id="newsChart"></canvas>
+        </section>
+    </main>
+
+    <script id="news-data" type="application/json">
+        <%= JSON.stringify(news) %>
+    </script>
+    
+    <script>
+        // Safely read and parse the embedded JSON
+        const newsData = JSON.parse(document.getElementById('news-data').textContent);
+    
+        const categories = {};
+        newsData.forEach(article => {
+            const source = article.source.name;
+            categories[source] = (categories[source] || 0) + 1;
+        });
+    
+        // Create chart for news sources
+        const ctx = document.getElementById('newsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(categories),
+                datasets: [{
+                    label: 'News Articles by Source',
+                    data: Object.values(categories),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

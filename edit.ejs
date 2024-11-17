@@ -1,0 +1,14 @@
+<!-- views/portfolio/edit.ejs -->
+<h1>Edit Portfolio Item</h1>
+<form action="/portfolio/edit/<%= item._id %>" method="POST">
+    <label for="title">Title</label>
+    <input type="text" name="title" value="<%= item.title %>" required>
+    
+    <label for="description">Description</label>
+    <textarea name="description" required><%= item.description %></textarea>
+    
+    <label for="images">Images (Comma-separated URLs)</label>
+    <input type="text" name="images" value="<%= item.images.join(',') %>" required>
+    
+    <button type="submit">Update</button>
+</form>

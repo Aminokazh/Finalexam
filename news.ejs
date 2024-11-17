@@ -1,0 +1,13 @@
+<!-- news.ejs -->
+<% layout('layout') %> <!-- Use the layout template -->
+
+<h2 class="text-center">Latest News</h2>
+<ul class="list-group">
+    <% news.forEach(function(article) { %>
+        <li class="list-group-item">
+            <h5><%= article.title %></h5>
+            <p><%= article.description %></p>
+            <a href="<%= article.url %>" target="_blank" class="btn btn-primary">Read More</a>
+        </li>
+    <% }) %>
+</ul>
